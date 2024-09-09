@@ -1,6 +1,7 @@
 #Proyecto
 import Interfaz
 import hashlib
+import Limpiar
 
 def verificar_contrasena(contrasena):
     reglas_usuario = {
@@ -52,6 +53,7 @@ def verificar_usuario(nombre_usuario):
     return False
 
 def registrar_usuario():
+    Limpiar.limpiar_terminal()
     while True:
         username = input("Nombre de Usuario: ")
         if verificar_usuario(username):
@@ -73,6 +75,7 @@ def registrar_usuario():
 
 
 def iniciar_secion():
+    Limpiar.limpiar_terminal()
     while True:
         username = input("Nombre de Usuario: ")
         if not verificar_usuario(username):
@@ -92,10 +95,14 @@ def iniciar_secion():
                 if clave == username:
                     if valor == hashed_password:
                         print("Inicio de sesión exitoso")
+                        Interfaz.interfaz(username)
                         return
                     else:
                         print("Contraseña incorrecta")
                         break
+                else:
+                    print("Usuario no encontrado, inténtalo de nuevo o presiona enter para salir")
+
   
 
 while True:

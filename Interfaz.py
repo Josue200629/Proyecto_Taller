@@ -2,6 +2,9 @@
 import datetime
 import string
 import random
+import hashlib
+import Limpiar
+
 reglas_usuario = {
     'longitud_minima': 8,  # El usuario define la longitud mínima
     'longitud_maxima': 12, # El usuario define la longitud máxima
@@ -12,6 +15,7 @@ reglas_usuario = {
     'caracteres_especiales': '!@#$%^&*()_'  # El usuario define los caracteres especiales permitidos
     }
 def contraseña():
+    Limpiar.limpiar_terminal()
     while True:
         print("\n¿Deseas ingresar la contraseña tú mismo o generar una aleatoria?")
         print("1: Ingresar la contraseña por ti mismo")
@@ -99,30 +103,48 @@ def guardar_contrasena(usuario):
         print('Contraseña registrada..')
     
 def ver_contraseñas(usuario):
+    Limpiar.limpiar_terminal()
     with open(usuario + ".txt", "rb") as archivo:
         archivo.seek(0)
         clave_maestra = input("Clave Maestra: ")
         valor = buscar_usuario_en_archivo(nombre_archivo='Usuarios.txt', nombre_usuario=usuario)
-        if valor== clave_maestra:
-            if archivo.read=='':
-                print(f'El archivo {usuario}.txt está vació')
-            else:
-                for linea in archivo:
-                    linea.strip()
-                    print(linea)
+        if valor == clave_maestra:
+            Url_o_Ser = input("Ingrese Url o el servicio: ").strip()
+            for linea in archivo:
+                if Url_o_Ser in str(linea):
+                    print(f"Datos encontrados:\n{linea.strip()}")
+                    print("__Desea ver la contraseña__")
+                    try:
+                        Decisión = int(input("Ingrese 1 para ver contraseña, \n o 2 para volver al menú: "))
+                        if Decisión == 1:
+                            print("Aquí va la contraseña")
+                            #Contraseña desencriptada
+                        else:
+                            break
+                    except ValueError:
+                        print("Error: no ingresaste un número válido.")
+                    except ZeroDivisionError:
+                        print("Error: división entre cero no permitida.")
+                        
+                else: 
+                   pass
 
 def interfaz(Username):
+    Limpiar.limpiar_terminal()
     while True:
-        print('___Que desea realizar___\n1: Guardar contraseña\n2: Ver contraseñas\nenter: Salir')
-        opcion= int(input('Diguite un número: '))
+        print('___Que desea realizar___\n1: Guardar contraseña\n2: Ver contraseñas\nEnter: Salir')
+        opcion = input('Digite un número: ').strip()  # Captura la entrada como cadena
+        
+        if opcion == '':  # Si el usuario presiona enter sin introducir nada
+            break
         try:
-            if opcion==1:
+            opcion = int(opcion)  # Convierte la entrada a entero si no está vacía
+            if opcion == 1:
                 guardar_contrasena(Username)
-            elif opcion==2:
+            elif opcion == 2:
                 ver_contraseñas(Username)
-            elif opcion=='':
-                break
             else:
-                print('Opción no valida')     
+                print('Opción no válida')
         except ValueError:
-            print('Opción no valida')     
+            print('Opción no válida')
+ 

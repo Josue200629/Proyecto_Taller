@@ -1,0 +1,2 @@
+Servicio: Movistar, usuario: Cristhian_Josue, contrasena: 9d0a993fa22846e8ab4c4b94b10f23115fb6f6789274f6c7613aa22edcd8416d, url: Tito, descripcion: tengo sueño, fecha_creacion: 2024-09-08 23:45:24.583225, 
+Servicio: Tec, usuario: Cristhian_Josue, contrasena: 6a98d80b84ca49f2e0be4da691556cc2b3559dc95273a2ae14032de6ab75d839, url: hTEC, descripcion: Tecnológico de Costa Rica, fecha_creacion: 2024-09-09 07:51:17.483718, 
