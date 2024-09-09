@@ -1,5 +1,6 @@
 #Proyecto
 import Interfaz
+import hashlib
 
 def verificar_contrasena(contrasena):
     reglas_usuario = {
@@ -58,38 +59,44 @@ def registrar_usuario():
         else:
             password = input("Contraseña (debe tener entre 8 y 12 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales válidos): ")
             if verificar_contrasena(password):
+                # Cifrar la contraseña
+                hashed_password = hashlib.sha256(password.encode()).hexdigest()
+                
                 with open('Usuarios.txt', "a") as archivo:
-                     archivo.write(f'{username}:{password}\n')
+                    archivo.write(f'{username}:{hashed_password}\n')
                 
                 with open(username+'.txt', 'w') as archivo:
                     print("Usuario registrado con éxito")
                 break
-
             else:
                 print("Contraseña no válida, ingrese una nueva.")
 
 
 def iniciar_secion():
     while True:
-        cont = 3
         username = input("Nombre de Usuario: ")
-        if username == "":
-            break
-        password = input("Password: ")
-        resultado = Interfaz.buscar_usuario_en_archivo('Usuarios.txt', username)
-        if resultado:
-            if resultado == password:
-                Interfaz.interfaz(username)
-                break
-            else:
-                print("Contraseña incorrecta")
-                cont -= 1
-        else:
+        if not verificar_usuario(username):
             print("Usuario no encontrado, inténtalo de nuevo o presiona enter para salir")
-
-        if cont == 0:
-            print("Número máximo de intentos alcanzado.")
-            break  
+            continue
+        
+        password = input("Contraseña: ")
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()  # Cifrar la contraseña ingresada
+        
+        # Verificar si el usuario y el hash de la contraseña coinciden
+        with open("Usuarios.txt", 'r') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if not linea:
+                    continue
+                clave, valor = linea.split(':', 1)
+                if clave == username:
+                    if valor == hashed_password:
+                        print("Inicio de sesión exitoso")
+                        return
+                    else:
+                        print("Contraseña incorrecta")
+                        break
+  
 
 while True:
     print("__Menú de incio__\n1: Iniciar seción\n2: Registrarse\notro: Salir")
